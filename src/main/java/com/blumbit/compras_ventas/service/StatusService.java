@@ -31,8 +31,8 @@ public class StatusService {
         productos.add("Producto2");
         productos.clear();
         //DATO OBJETO (logica de negocio)
-        Rol rolAdmin = new Rol("ADMIN", "Rol administrador", 1);
-        Rol rolGerente = new Rol("GERENTE", "Rol gerente", 2);
+        Rol rolAdmin = new Rol(1, "ADMIN", "Rol administrador");
+        Rol rolGerente = new Rol(2, "GERENTE", "Rol gerente");
         rolAdmin.getNombre(); //ADMIN
         rolAdmin.setNombre("Admin"); //Admin
     }

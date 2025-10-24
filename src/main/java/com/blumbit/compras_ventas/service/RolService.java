@@ -19,5 +19,23 @@ public class RolService {
     public List<Rol> findAllRoles(){
         return rolRepository.findAll();
     }
+
+    public Rol findRolById(Integer rolId) {
+        return rolRepository.findById(rolId).get();
+    }
+
+    public Rol createRol(Rol rol) {
+        return rolRepository.save(rol);
+    }
+
+    public Rol updateRol(Rol rol) {
+        Rol rolRetrieved = findRolById(rol.getId());
+        rolRetrieved.setNombre(rol.getNombre());
+        rolRetrieved.setDescripcion(rol.getDescripcion());
+        return rolRepository.save(rolRetrieved);
+    }
     
+    public void deleteRolById(Integer rolId) {
+        rolRepository.deleteById(rolId);
+    }
 }

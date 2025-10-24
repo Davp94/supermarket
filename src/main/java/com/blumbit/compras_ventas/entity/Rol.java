@@ -8,45 +8,44 @@ import jakarta.persistence.Id;
 public class Rol {
     //atributos
     @Id
-    private Integer identifier;
+    private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, length = 50)
     private String nombre;
 
     @Column()
-    private String description;
+    private String descripcion;
 
     //constructor
-    public Rol(String nombre, String description, Integer identifier){
-        this.identifier = identifier;
+    public Rol(Integer id, String nombre, String descripcion){
+        this.id = id;
         this.nombre = nombre;
-        this.description = description;
+        this.descripcion = descripcion;
     }
 
     //Getters / Setters
+    
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre){
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public int getIdentifier() {
-        return identifier;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    
 }
