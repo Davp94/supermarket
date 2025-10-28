@@ -23,6 +23,10 @@ public class Rol {
         this.descripcion = descripcion;
     }
 
+    public Rol(){
+        
+    }
+
     //Getters / Setters
     
     public Integer getId() {
