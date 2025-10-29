@@ -1,5 +1,7 @@
 package com.blumbit.compras_ventas.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -27,4 +29,14 @@ public class Permiso {
 
     @Column(name = "per_accion", length = 100)
     private String accion;
+
+    //Datos auditoria
+    private LocalDateTime fechaCreacion;
+
+    private LocalDateTime fechaModificacion;
+
+    private Integer usuarioCreacion;
+
+    private Integer usuarioModificacion;
+    
 }

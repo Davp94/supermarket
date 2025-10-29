@@ -25,6 +25,7 @@ public class RolService {
     }
 
     public Rol createRol(Rol rol) {
+        //Usar paradigma reactivo
         return rolRepository.save(rol);
     }
 
