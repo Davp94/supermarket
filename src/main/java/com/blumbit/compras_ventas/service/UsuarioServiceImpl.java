@@ -44,7 +44,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponse createUsuario(UsuarioRequest usuarioRequest) {
         try {
             Usuario usuarioToSave = UsuarioRequest.toEntity(usuarioRequest);
-            // TODO add encrypt password and generate username
             usuarioToSave.setPassword("123456");
             usuarioToSave.setUsername("dsadasd");
             return UsuarioResponse.fromEntity(usuarioRepository.save(usuarioToSave));

@@ -15,6 +15,7 @@ import com.blumbit.compras_ventas.dto.request.PermisoRequest;
 import com.blumbit.compras_ventas.dto.response.PermisoResponse;
 import com.blumbit.compras_ventas.service.PermisoService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -35,7 +36,7 @@ public class PermisoController {
     }
 
     @PostMapping
-    public PermisoResponse createPermiso(@RequestBody PermisoRequest permisoRequest){
+    public PermisoResponse createPermiso(@Valid @RequestBody PermisoRequest permisoRequest){
         return permisoService.createPermiso(permisoRequest);
     }
 
