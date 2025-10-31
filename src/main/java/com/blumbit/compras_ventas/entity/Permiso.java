@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +19,7 @@ import lombok.Setter;
 @Entity
 public class Permiso {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     @Column(name = "per_nombre", nullable = false, length = 50)
     private String nombre;
