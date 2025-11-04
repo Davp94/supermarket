@@ -1,12 +1,16 @@
 package com.blumbit.compras_ventas.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,4 +53,12 @@ public class Usuario {
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+        name = "usuario_rol",
+        joinColumns = @JoinColumn(name="usuario_id"),
+        inverseJoinColumns = @JoinColumn(name="rol_id")
+    )
+    private List<Rol> roles;
 }
