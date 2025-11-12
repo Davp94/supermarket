@@ -1,4 +1,4 @@
-package com.blumbit.compras_ventas.auth.dto;
+package com.blumbit.compras_ventas.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthResponse {
-
-    private String token;
-
-    private String refreshToken;
-
-    private Integer identifier;
-    
-    private Long expiration;
+public class ProductoAlmacenRequest {
+    private Integer almacenId;
+    private Integer productoId;
+    private Integer stock;
 }
