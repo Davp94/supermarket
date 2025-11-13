@@ -2,6 +2,8 @@ package com.blumbit.compras_ventas.dto.request;
 
 import java.math.BigDecimal;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.blumbit.compras_ventas.entity.Producto;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ public class ProductoRequest {
     private String descripcion;
     private String marca;
     private BigDecimal precioVenta;
+    private MultipartFile file;
     private Integer categoriaId;
 
     public static Producto toEntity(ProductoRequest productoRequest){

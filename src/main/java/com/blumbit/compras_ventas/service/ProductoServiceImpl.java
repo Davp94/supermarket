@@ -10,12 +10,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.blumbit.compras_ventas.common.dto.FileRequest;
+import com.blumbit.compras_ventas.common.dto.FileResponse;
 import com.blumbit.compras_ventas.common.dto.PageableRequest;
 import com.blumbit.compras_ventas.common.dto.PageableResponse;
 import com.blumbit.compras_ventas.dto.request.ProductoAlmacenRequest;
 import com.blumbit.compras_ventas.dto.request.ProductoRequest;
 import com.blumbit.compras_ventas.dto.response.ProductoFilterCriteria;
 import com.blumbit.compras_ventas.dto.response.ProductoResponse;
+import com.blumbit.compras_ventas.entity.Almacen;
+import com.blumbit.compras_ventas.entity.AlmacenProducto;
+import com.blumbit.compras_ventas.entity.Categoria;
 import com.blumbit.compras_ventas.entity.Producto;
 import com.blumbit.compras_ventas.repository.AlmacenProductoRepository;
 import com.blumbit.compras_ventas.repository.ProductoRepository;
@@ -29,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class ProductoServiceImpl implements ProductoService{
 
     private final ProductoRepository productoRepository;
+
+    private final FileService fileService;
 
     private final AlmacenProductoRepository almacenProductoRepository;
 
@@ -58,20 +65,35 @@ public class ProductoServiceImpl implements ProductoService{
 
     @Override
     public ProductoResponse createProducto(ProductoRequest productoRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProducto'");
+        try {
+            Producto productoToCreate = ProductoRequest.toEntity(productoRequest);
+            productoToCreate.setCategoria(entityManager.getReference(Categoria.class, productoRequest.getCategoriaId()));
+            FileResponse createFile = fileService.createFile(FileRequest.builder().file(productoRequest.getFile()).build());
+            productoToCreate.setImagen(createFile.getFilePath());
+            return ProductoResponse.fromEntity(productoRepository.save(productoToCreate));
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
     public ProductoResponse createProductoAlmacen(ProductoAlmacenRequest productoAlmacenRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProductoAlmacen'");
+        try {
+            AlmacenProducto almacenProductoToCreate = AlmacenProducto.builder()
+            .almacen(entityManager.getReference(Almacen.class, productoAlmacenRequest.getAlmacenId()))
+            .producto(entityManager.getReference(Producto.class, productoAlmacenRequest.getProductoId()))
+            .stock(productoAlmacenRequest.getStock())
+            .build();
+            return ProductoResponse.fromEntity(almacenProductoRepository.save(almacenProductoToCreate).getProducto());
+        } catch (Exception e) {
+           throw e;
+        }
     }
 
     @Override
     public List<ProductoResponse> getAllProductosByAlmacen(Integer almacenId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllProductosByAlmacen'");
+        return almacenProductoRepository.findByAlmacen_Id(almacenId).stream().map(res->ProductoResponse.fromEntity(res.getProducto()))
+        .collect(Collectors.toList());
     }
 
 }
