@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blumbit.compras_ventas.dto.request.RolRequest;
+import com.blumbit.compras_ventas.dto.response.RolResponse;
 import com.blumbit.compras_ventas.entity.Rol;
 import com.blumbit.compras_ventas.service.RolService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,18 +37,18 @@ public class RolController {
 
     //   /rol/{id} -> /rol/1    Path Variable
     @GetMapping("/{id}")
-    public Rol findRolById(@PathVariable Integer id){
+    public RolResponse findRolById(@PathVariable Integer id){
         return rolService.findRolById(id);
     }
 
     @PostMapping()
-    public Rol createROl(@RequestBody Rol rol) {
-        return rolService.createRol(rol);
+    public Rol createROl(@RequestBody RolRequest rolRequest) {
+        return rolService.createRol(rolRequest);
     }
 
-    @PutMapping
-    public Rol updateRol(@RequestBody Rol rol) {
-        return rolService.updateRol(rol);
+    @PutMapping("/{id}")
+    public Rol updateRol(@PathVariable Integer id, @RequestBody RolRequest rol) {
+        return rolService.updateRol(id, rol);
     }
 
     @DeleteMapping("/{id}")

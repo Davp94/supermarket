@@ -1,6 +1,8 @@
 package com.blumbit.compras_ventas.dto.response;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.blumbit.compras_ventas.entity.Usuario;
 
@@ -35,6 +37,8 @@ public class UsuarioResponse {
 
     private String username;
 
+    private List<Integer> roles;
+
     public static UsuarioResponse fromEntity(Usuario usuario){
         return UsuarioResponse.builder()
         .id(usuario.getId())
@@ -46,6 +50,7 @@ public class UsuarioResponse {
         .dni(usuario.getDni())
         .correo(usuario.getCorreo())
         .username(usuario.getUsername())
+        .roles(usuario.getRoles().stream().map(rol->rol.getId()).collect(Collectors.toList()))
         .build();
     }
 

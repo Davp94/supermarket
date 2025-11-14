@@ -77,7 +77,6 @@ public class ProductoController {
     @PostMapping("/almacen")
     public ResponseEntity<ProductoResponse> createProductoAlmacen(@RequestBody ProductoAlmacenRequest req) {
         
-        
         return ResponseEntity.ok(productoService.createProductoAlmacen(req));
     }    
     

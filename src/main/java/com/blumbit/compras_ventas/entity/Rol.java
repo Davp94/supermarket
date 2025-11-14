@@ -4,13 +4,22 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Rol {
     //atributos
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(nullable = false, length = 50)
@@ -23,15 +32,15 @@ public class Rol {
     private List<Usuario> usuarios;
 
     //constructor
-    public Rol(Integer id, String nombre, String descripcion){
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    }
+    // public Rol(Integer id, String nombre, String descripcion){
+    //     this.id = id;
+    //     this.nombre = nombre;
+    //     this.descripcion = descripcion;
+    // }
 
-    public Rol(){
+    // public Rol(){
         
-    }
+    // }
 
     //Getters / Setters
     
