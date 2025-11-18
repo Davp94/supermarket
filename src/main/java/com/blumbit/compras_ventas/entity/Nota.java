@@ -46,7 +46,7 @@ public class Nota {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-      @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 }

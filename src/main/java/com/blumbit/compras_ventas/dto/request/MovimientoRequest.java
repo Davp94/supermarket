@@ -24,7 +24,7 @@ public class MovimientoRequest {
     private Integer productoId;
     private Integer almacenId;
 
-    public static Movimiento toEntiy(MovimientoRequest movimientoRequest){
+    public static Movimiento toEntity(MovimientoRequest movimientoRequest){
         return Movimiento.builder()
         .cantidad(movimientoRequest.getCantidad())
         .tipoMovimiento(movimientoRequest.getTipoMovimiento())
