@@ -1,14 +1,6 @@
-import Image from "next/image";
-import { Button } from 'primereact/button';
+import UsuariosHome from "@/components/usuarios/UsuariosHome";
 export default function Home() {
-  //TODO remove page from root 
   return (
-    <div className="text-lg">
-      HELLO FROM HOME
-       <div className="card flex justify-center">
-            <Button label="Check" icon="pi pi-check" />
-        </div>
-    </div>
-    
+    <UsuariosHome/>    
   );
 }
