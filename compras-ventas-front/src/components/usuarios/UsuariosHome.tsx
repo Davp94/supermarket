@@ -281,10 +281,19 @@ export default function UsuariosHome() {
         className="p-fluid"
         onHide={hideDialog}
       >
-        {flagAction == OperationTypeEnum.READ && <UsuariosView />}
+        {flagAction == OperationTypeEnum.READ && (
+          <UsuariosView usuario={usuario} hideDialog={hideDialog} />
+        )}
         {[OperationTypeEnum.CREATE, OperationTypeEnum.UPDATE].includes(
           flagAction
-        ) && <UsuariosForm />}
+        ) && (
+          <UsuariosForm
+            usuario={usuario}
+            hideDialog={hideDialog}
+            flagAction={flagAction}
+            toast={toast}
+          />
+        )}
       </Dialog>
     </div>
   );
