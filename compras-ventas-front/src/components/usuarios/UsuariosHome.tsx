@@ -20,16 +20,16 @@ import {
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
-import { ProductService } from "@/services/product.service";
 import { UsuarioResponse } from "@/types/response/usuarios.response";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { OperationTypeEnum } from "@/constant/operation.enum";
 import UsuariosView from "./UsuariosView";
 import FullPageLayout from "@/app/(full-page)/layout";
 import UsuariosForm from "./UsuariosForm";
+import { useUsuarios } from "@/hooks/useUsuario";
 
 export default function UsuariosHome() {
-  const [usuarios, setUsuarios] = useState<UsuarioResponse[]>([]);
+  const [usuarios, setUsuarios] = useState<UsuarioResponse[] | undefined>([]);
   const [usuarioDialog, setUsuarioDialog] = useState<boolean>(false);
   const [usuario, setUsuario] = useState<UsuarioResponse | null>(null);
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -37,49 +37,11 @@ export default function UsuariosHome() {
   const toast = useRef<Toast>(null);
   const dt = useRef<DataTable<UsuarioResponse[]>>(null);
 
-  //TODO add hook usuarios
 
+  const {getUsuarios, deleteUsuario} = useUsuarios();
   const initComponent = async () => {
-    //TODO call getusuarios();
-    const usuarios = await [
-      {
-        id: 1,
-        nombres: "María",
-        apellidos: "González López",
-        fechaNacimiento: "1990-05-15",
-        telefono: "+51 987 654 321",
-        direccion: "Av. Principal 123, Lima",
-        dni: "12345678",
-        correo: "maria.gonzalez@email.com",
-        username: "mariagonzalez",
-        roles: [1, 2], // Ejemplo: 1=Admin, 2=Usuario
-      },
-      {
-        id: 2,
-        nombres: "Carlos",
-        apellidos: "Rodríguez Pérez",
-        fechaNacimiento: "1985-08-22",
-        telefono: "+51 987 123 456",
-        direccion: "Calle Las Flores 456, Arequipa",
-        dni: "87654321",
-        correo: "carlos.rodriguez@email.com",
-        username: "carlosrp",
-        roles: [2], // Solo rol de Usuario
-      },
-      {
-        id: 3,
-        nombres: "Ana",
-        apellidos: "Martínez",
-        fechaNacimiento: "1995-11-30",
-        telefono: "+51 955 444 333",
-        direccion: "Jr. Union 789, Trujillo",
-        dni: "55555555",
-        correo: "ana.martinez@email.com",
-        username: "anamartinez",
-        roles: [3], // Ejemplo: 3=Invitado
-      },
-    ];
-    setUsuarios(usuarios);
+    const usuariosResponse = await getUsuarios();
+    setUsuarios(usuariosResponse);
   };
 
   useEffect(() => {
@@ -117,7 +79,7 @@ export default function UsuariosHome() {
       header: "CONFIRMACION",
       icon: "pi pi-exclamation-triangle",
       defaultFocus: "accept",
-      accept: () => deleteUsuario(usuario),
+      accept: () => deleteUser(usuario),
       reject: () =>
         toast.current?.show({
           severity: "info",
@@ -128,8 +90,8 @@ export default function UsuariosHome() {
     });
   };
 
-  const deleteUsuario = (usuario: UsuarioResponse) => {
-    //TODO add deleteUsuario hook
+  const deleteUser = (usuario: UsuarioResponse) => {
+    deleteUsuario(usuario.id != null ? usuario.id : 0);
     toast.current?.show({
       severity: "success",
       summary: "Exitoso",

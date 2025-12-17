@@ -10,6 +10,8 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
+import { useUsuarios } from "@/hooks/useUsuario";
+import { useRoles } from "@/hooks/useRoles";
 
 interface UsuarioFormProps {
   usuario: UsuarioResponse | null;
@@ -23,9 +25,10 @@ export default function UsuariosForm({
   toast,
   flagAction,
 }: UsuarioFormProps) {
-  const [roles, setRoles] = useState<RolesResponse[]>([]);
+  const [roles, setRoles] = useState<RolesResponse[] | undefined>([]);
   const [rolesUsuario, setRolesUsuario] = useState([]);
-  //TODO add hooks roles y usuarios
+  const { createUsuario, updateUsuario } = useUsuarios();
+  const { getRoles } = useRoles();
   const {
     control,
     formState: { errors },
@@ -49,7 +52,7 @@ export default function UsuariosForm({
   });
 
   const initForm = async () => {
-    const roles = await [];
+    const roles = await getRoles();
     setRoles(roles);
 
     if (usuario != null && flagAction == OperationTypeEnum.UPDATE) {
@@ -63,7 +66,10 @@ export default function UsuariosForm({
       const result = getValues();
       result.roles = rolesUsuario;
       try {
-        //TODO call createUsuario()
+        createUsuario({
+                    ...result,
+                    fechaNacimiento: result.fechaNacimiento.toISOString(),
+                });
         reset();
       } catch (error) {
         toast.current?.show({
@@ -79,7 +85,10 @@ export default function UsuariosForm({
       const result = getValues();
       result.roles = rolesUsuario;
       try {
-        //TODO call updateUsuario()
+        updateUsuario({
+                    ...result,
+                    fechaNacimiento: result.fechaNacimiento.toISOString(),
+                }, result.id);
         reset();
       } catch (error) {
         toast.current?.show({
@@ -214,6 +223,7 @@ export default function UsuariosForm({
               optionValue="id"
               className="w-full"
             />
+            
           </div>
         </div>
         <div className="flex flex-row justify-end items-end gap-2 md: w-1/2">
