@@ -22,6 +22,7 @@ import com.blumbit.compras_ventas.entity.Cliente;
 import com.blumbit.compras_ventas.entity.Permiso;
 import com.blumbit.compras_ventas.entity.Producto;
 import com.blumbit.compras_ventas.entity.Rol;
+import com.blumbit.compras_ventas.entity.RolPermiso;
 import com.blumbit.compras_ventas.entity.Sucursal;
 import com.blumbit.compras_ventas.entity.Usuario;
 import com.blumbit.compras_ventas.repository.AlmacenProductoRepository;
@@ -30,6 +31,7 @@ import com.blumbit.compras_ventas.repository.CategoriaRepository;
 import com.blumbit.compras_ventas.repository.ClienteRepository;
 import com.blumbit.compras_ventas.repository.PermisoRepository;
 import com.blumbit.compras_ventas.repository.ProductoRepository;
+import com.blumbit.compras_ventas.repository.RolPermisoRepository;
 import com.blumbit.compras_ventas.repository.RolRepository;
 import com.blumbit.compras_ventas.repository.SucursalRepository;
 import com.blumbit.compras_ventas.repository.UsuarioRepository;
@@ -44,6 +46,7 @@ public class DataSeeder implements ApplicationRunner {
     private final UsuarioRepository usuarioRepository;
     private final PermisoRepository permisoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final RolPermisoRepository rolPermisoRepository;
     private final RolRepository rolRepository;
     private final SucursalRepository sucursalRepository;
     private final ProductoRepository productoRepository;
@@ -84,19 +87,56 @@ public class DataSeeder implements ApplicationRunner {
             System.out.println("✓ Permisos creados: " + allPermisos.size());
         }
 
-        if (usuarioRepository.count() == 0) {
-            usuarioRepository.save(Usuario.builder()
-                    .nombres(faker.name().firstName())
-                    .apellidos(faker.name().lastName())
-                    .correo(faker.internet().emailAddress())
-                    .direccion(faker.address().fullAddress())
-                    .estado("ACTIVO")
-                    .fechaNacimiento(LocalDate.now())
-                    .dni(faker.number().digits(11))
-                    .username(faker.name().fullName())
-                    .telefono(faker.phoneNumber().cellPhone())
-                    .password(passwordEncoder.encode("123456"))
-                    .build());
+        if (rolRepository.count() == 0) {
+            Rol adminRol = Rol.builder()
+                    .nombre("ADMIN")
+                    .descripcion("Administrador con acceso completo al sistema")
+                    .build();
+            adminRol = rolRepository.save(adminRol);
+
+            Rol managerRol = Rol.builder()
+                    .nombre("MANAGER")
+                    .descripcion("Gerente con permisos de gestión")
+                    .build();
+            managerRol = rolRepository.save(managerRol);
+            Rol userRol = Rol.builder()
+                    .nombre("USER")
+                    .descripcion("Usuario estándar con permisos de lectura")
+                    .build();
+            userRol = rolRepository.save(userRol);
+
+            Rol sellerRol = Rol.builder()
+                    .nombre("SELLER")
+                    .descripcion("Vendedor con permisos de ventas")
+                    .build();
+            sellerRol = rolRepository.save(sellerRol);
+            if (usuarioRepository.count() == 0) {
+                for (int i = 0; i < 10; i++) {
+                    usuarioRepository.save(Usuario.builder()
+                            .nombres(faker.name().firstName())
+                            .apellidos(faker.name().lastName())
+                            .correo(faker.internet().emailAddress())
+                            .direccion(faker.address().fullAddress())
+                            .estado("ACTIVO")
+                            .fechaNacimiento(LocalDate.now())
+                            .dni(faker.number().digits(11))
+                            .username(faker.name().firstName())
+                            .telefono(faker.phoneNumber().cellPhone())
+                            .password(passwordEncoder.encode("123456"))
+                            .roles(List.of(managerRol, userRol, sellerRol, adminRol))
+                            .build());
+                }
+            }
+        }
+
+        // CREATE ROLES PERMISOS
+        if(rolPermisoRepository.count() == 0){
+            for(int i = 0; i<10; i++){
+                rolPermisoRepository.save(RolPermiso.builder()
+                .permiso(null)
+                .rol(null)
+                .build());
+            }
         }
         if (categoriaRepository.count() == 0) {
             List<Categoria> categorias = new ArrayList<>();
@@ -204,12 +244,6 @@ public class DataSeeder implements ApplicationRunner {
                 clienteRepository.save(cliente);
             }
         }
-
-        // ADD CATEGORIAS
-        // ADD PRODUCTOS
-        // ADD ALMACEN & SUCURSAL
-        // ADD ALMACEN PRODUCTO
-        // ...
     }
 
     private String generatePhoneNumber(Faker faker) {

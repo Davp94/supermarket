@@ -38,7 +38,7 @@ public class Producto {
     @Column(length = 100)
     private String marca;
     
-    @Column(nullable = false, precision = 2, scale = 10)
+    @Column(nullable = false)
     private BigDecimal precioVenta;
 
 

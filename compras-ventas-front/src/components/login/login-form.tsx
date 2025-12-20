@@ -28,7 +28,7 @@ export default function LoginForm() {
   const onSubmit = async () => {
     try {
       const authRequest = getValues();
-      await login(authRequest);
+      //await login(authRequest);
       router.push("/");
     } catch (error) {
       toast.current?.show({

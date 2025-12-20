@@ -40,8 +40,8 @@ export default function UsuariosHome() {
 
   const {getUsuarios, deleteUsuario} = useUsuarios();
   const initComponent = async () => {
-    const usuariosResponse = await getUsuarios();
-    setUsuarios(usuariosResponse);
+    //const usuariosResponse = await getUsuarios();
+    //setUsuarios(usuariosResponse);
   };
 
   useEffect(() => {
