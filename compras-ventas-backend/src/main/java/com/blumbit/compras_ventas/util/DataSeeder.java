@@ -235,6 +235,7 @@ public class DataSeeder implements ApplicationRunner {
                         .razonSocial(faker.company().name() + " " +
                                 faker.options().option("S.A.", "S.R.L.", "LTDA", "CIA"))
                         .estado(true)
+                        .nroIdentificacion(faker.number().digits(11))
                         .telefono(generatePhoneNumber(faker))
                         .direccion(faker.address().streetAddress() + ", " +
                                 faker.address().city())

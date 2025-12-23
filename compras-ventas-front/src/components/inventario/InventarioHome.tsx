@@ -1,4 +1,6 @@
 import { OperationTypeEnum } from "@/constant/operation.enum";
+import { useInventario } from "@/hooks/useInventario";
+import { PaginationResponse } from "@/types/common/pagination.request";
 import { AlmacenResponse } from "@/types/response/almacen.response";
 import { ProductosResponse } from "@/types/response/ProductosResponse";
 import { SucursalResponse } from "@/types/response/sucursal.response";
@@ -17,7 +19,7 @@ import React from "react";
 import { useEffect, useRef, useState } from "react";
 
 export default function InventarioHome() {
-  const [productos, setProductos] = useState<ProductosResponse[]>();
+  const [productos, setProductos] = useState<PaginationResponse<ProductosResponse[]> | undefined>();
   const [sucursales, setSucursales] = useState<SucursalResponse[]>();
   const [almacenes, setAlmacenes] = useState<AlmacenResponse[]>();
   const [productoDialog, setProductoDialog] = useState<boolean>(false);
@@ -40,11 +42,11 @@ export default function InventarioHome() {
     sortOrder: "ASC" as "ASC" | "DESC",
   });
 
-  //TODO add inventario services
+  const {getProductos: getProductosHook, getAlmacenes: getAlmacenesHook, getSucursales} = useInventario();
 
   const initComponent = async () => {
     try {
-      const sucursalesRetrieved = await [];
+      const sucursalesRetrieved = await getSucursales();
       setSucursales(sucursalesRetrieved);
     } catch (error) {
       toast.current?.show({
@@ -63,7 +65,7 @@ export default function InventarioHome() {
   const getAlmacenes = async () => {
     if (selectedSucursal?.id) {
       try {
-        const almacenesRetrieved = await [];
+        const almacenesRetrieved = await getAlmacenesHook(selectedSucursal.id);
         setAlmacenes(almacenesRetrieved);
       } catch (error) {
         toast.current?.show({
@@ -84,12 +86,12 @@ export default function InventarioHome() {
     const getProductos = async () => {
       if (selectedAlmacen?.id) {
         try {
-          // const productosRetrieved = await getProductosPaginacion({
-          //   ...lazyState,
-          //   filterValue: globalFilter || null,
-          //   almacenId: selectedAlmacen.id,
-          // });
-          //setProductos(productosRetrieved.content);
+          const productosRetrieved = await getProductosHook({
+            ...lazyState,
+            filterValue: globalFilter || null,
+            almacenId: selectedAlmacen.id,
+          });
+          setProductos(productosRetrieved);
         } catch (error) {
           toast.current?.show({
             severity: "error",
@@ -234,7 +236,7 @@ export default function InventarioHome() {
           ></Toolbar>
           <DataTable
             ref={dt}
-            value={productos}
+            value={productos?.content}
             dataKey="id"
             paginator
             rows={lazyState.pageSize}
@@ -244,7 +246,7 @@ export default function InventarioHome() {
             globalFilter={globalFilter}
             header={header}
             lazy
-            totalRecords={0}
+            totalRecords={productos?.totalElements}
             onPage={onPageChange}
             onSort={onSort}
             sortField={lazyState.sortField}

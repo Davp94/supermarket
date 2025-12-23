@@ -29,7 +29,7 @@ public class Cliente {
     @Column(nullable = false, length = 100)
     private String nroIdentificacion;
 
-    @Column(length = 20)
+    @Column(length = 50)
     private String telefono;
 
     private String direccion;
