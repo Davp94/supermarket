@@ -1,4 +1,5 @@
 'use client'
+import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "primereact/button";
@@ -14,6 +15,7 @@ export default function MainLayout({
   const router = useRouter();
   const pathname = usePathname();
   const userMenuRef  = useRef<Menu>(null);
+  const {logout} = useAuth();
   const navigationItems = [
     {name: "Home", href: "/", icon: "pi pi-home"},
     {name: "Usuarios", href: "/usuarios", icon: "pi pi-user"},
@@ -24,7 +26,7 @@ export default function MainLayout({
 
   const topbarItems: MenuItem[] = [
     { label: 'Perfil', icon: 'pi pi-user', command: () => {alert("USER PROFILE")} },
-    { label: 'Salir', icon: 'pi pi-sign-out', command: () => {alert("LOGOUT")} }
+    { label: 'Salir', icon: 'pi pi-sign-out', command: () => {logout()} }
   ]
 
   return (

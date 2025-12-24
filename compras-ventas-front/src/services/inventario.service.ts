@@ -33,9 +33,9 @@ export class InventarioService {
     }
   }
 
-  public static async getProductosAlmacen(almacenId: number): Promise<AlmacenResponse[]> {
+  public static async getProductosAlmacen(almacenId: number): Promise<ProductosResponse[]> {
     try {
-      const response = await apiClient.get<AlmacenResponse[]>(`/producto/almacen/${almacenId}`);
+      const response = await apiClient.get<ProductosResponse[]>(`/producto/almacen/${almacenId}`);
       return response.data;
     } catch (error) {
       throw new Error("Error recuperando los productos");
