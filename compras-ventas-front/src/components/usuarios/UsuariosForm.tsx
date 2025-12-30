@@ -144,7 +144,7 @@ export default function UsuariosForm({
             <InputController
               control={control}
               name="telefono"
-              rules={{required: 'Este campo es requerido'}}
+              rules={{required: 'Este campo es requerido', pattern: {value: /^[0-9]+$/, message: 'Solo se permiten numeros'}}}
               placeholder="Ingrese el telefono"
             />
           </div>
@@ -160,7 +160,13 @@ export default function UsuariosForm({
             <InputController
               control={control}
               name="dni"
-              rules={{required: 'Este campo es requerido'}}
+              rules={{
+                required: 'Este campo es requerido',
+                pattern: {
+                  value: /^\d{6,10}(?:-[A-Za-z]{3})?$/,
+                  message: 'El DNI debe tener 6-10 dígitos; opcionalmente seguido de un guion y 3 letras',
+                },
+              }}
               placeholder="Ingrese el numero de identificacion"
             />
           </div>

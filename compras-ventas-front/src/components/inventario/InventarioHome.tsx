@@ -17,6 +17,7 @@ import { Toast } from "primereact/toast";
 import { Toolbar } from "primereact/toolbar";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
+import { DropdownController } from "../common/dropdown.controller";
 
 export default function InventarioHome() {
   const [productos, setProductos] = useState<PaginationResponse<ProductosResponse[]> | undefined>();
@@ -197,6 +198,7 @@ export default function InventarioHome() {
   const header = (
     <div className="flex flex-wrap gap-2 items-center justify-between">
       <h4 className="m-0">Manage INventario</h4>
+      {/* <DropdownController optionValue="" options={} optionLabel="" placeholder=""/> */}
       <Dropdown
         value={selectedSucursal}
         onChange={(e)=>setSelectedSucursal(e.value)}
