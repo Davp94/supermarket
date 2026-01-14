@@ -1,3 +1,4 @@
+'use client'
 import { OperationTypeEnum } from "@/constant/operation.enum";
 import { useInventario } from "@/hooks/useInventario";
 import { PaginationResponse } from "@/types/common/pagination.request";
